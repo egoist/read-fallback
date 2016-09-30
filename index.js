@@ -19,6 +19,18 @@ function reduce(arr, handler) {
   return run(0)
 }
 
+function defaultHandler(file, index) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(file, 'utf8', (err, content) => {
+      if (err) {
+        return reject(err)
+      }
+
+      resolve({content, file})
+    })
+  })
+}
+
 module.exports = function (file, options) {
   options = Object.assign({
     extensions: ['']
@@ -43,18 +55,14 @@ module.exports = function (file, options) {
       return null
     }
 
-    if (options.skipReadFile) {
+    if (options.skipHandler) {
       return {file}
     }
 
-    return new Promise((resolve, reject) => {
-      fs.readFile(file, 'utf8', (err, content) => {
-        if (err) {
-          return reject(err)
-        }
+    const index = files.indexOf(file)
 
-        resolve({content, file})
-      })
-    })
+    return options.handler ?
+      options.handler(file, index) :
+      defaultHandler(file, index)
   })
 }

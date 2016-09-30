@@ -1,3 +1,5 @@
+/* globals describe test expect */
+const path = require('path')
 const read = require('../')
 
 describe('it works', () => {
@@ -46,14 +48,43 @@ describe('it works', () => {
       })
   })
 
-  test('skip readFile', () => {
+  test('skip handler', () => {
     return read('__test__/fixtures/fixture', {
       extensions: ['.txt', '.md'],
-      skipReadFile: true
+      skipHandler: true
     }).then(data => {
       expect(data).not.toBe(null)
       expect(data.file).toBe('__test__/fixtures/fixture.md')
       expect(data.content).toBeUndefined()
+    })
+  })
+
+  test('custom sync handler', () => {
+    return read('__test__/fixtures/foo', {
+      extensions: ['.ts', '.js'],
+      handler(file) {
+        // I know there's only foo.js
+        // so no need for validation
+        return require(path.join(process.cwd(), file))
+      }
+    }).then(data => {
+      expect(data).toBe('wow')
+    })
+  })
+
+  test('custom promise handler', () => {
+    return read('__test__/fixtures/foo', {
+      extensions: ['.ts', '.js'],
+      handler(file) {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            const data = require(path.join(process.cwd(), file))
+            resolve(data)
+          })
+        })
+      }
+    }).then(data => {
+      expect(data).toBe('wow')
     })
   })
 })

@@ -61,16 +61,40 @@ read('gulpfile', {extensions: ['.js', '.babel.js']})
 read('foo')
 ```
 
-#### skipReadFile
+#### handler
+
+Type: `function`
+
+Specific a handler function for reading file content, by default it's a promisified `fs.readFile` and returns `{file, content}` in the end.
+
+Any function which returns a Promise or does synchronus operations is valid.
+
+```js
+// you don't know what you have
+// but if a.js exists you do this
+// if a.ts exists you do that
+read(['a.js', 'a.ts'], {
+  handler(file, index) {
+    if (file === 'a.js') return require(path.resolve(file))
+    if (file === 'a.ts') return require(someTypeScriptParser(file))
+  }
+}).then(data => {
+  // the data isn't `{file, content}` anymore
+  // it's what you return in the last step
+  // here it's the result of require
+})
+```
+
+#### skipHandler
 
 Type: `boolean`<br>
 Default: `false`
 
-Simply return matched file path instead of reading it and return its content. Useful if you will `require` this file later. In this way:
+Simply return matched file path instead of using a handler function to read its content. In this way:
 
 ```js
 // assume we have b.js
-read(['a.js', 'b.js'], {skipReadFile: true})
+read(['a.js', 'b.js'], {skipHandler: true})
   .then(data => {
     console.log(data)
     //=> {file: 'b.js'}

@@ -15,7 +15,7 @@ Assume that I have a `foo.txt` with content `bar`:
 ```js
 const read = require('read-fallback')
 
-// it looks for foo.md, sure it does not exists
+// it looks for foo.md, sure it does not exist
 // then it looks for foo.txt, there it is
 // the last foo.xxx is skipped
 read('foo', {extensions: ['.md', '.txt', '.xxx']})
@@ -49,10 +49,16 @@ An array of file paths or a single file name.
 
 Type: `array`  
 
-Required when `input` is a string, eg: 
+Used when `input` is a string, eg: 
 
 ```js
+// looks for gulpfile.js then gulpfile.babel.js
 read('gulpfile', {extensions: ['.js', '.babel.js']})
+
+// if no extensions:
+// it simply reads `foo` only, without any extension
+// but yeah, it's not a common case
+read('foo')
 ```
 
 #### skipReadFile

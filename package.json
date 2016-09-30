@@ -34,7 +34,6 @@
     "extends": "egoist/esnext"
   },
   "dependencies": {
-    "path-exists": "^3.0.0",
-    "pify": "^2.3.0"
+    "path-exists": "^3.0.0"
   }
 }

@@ -66,3 +66,5 @@ module.exports = function (file, options) {
       defaultHandler(file, index)
   })
 }
+
+module.exports.defaultHandler = defaultHandler

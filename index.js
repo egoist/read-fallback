@@ -19,7 +19,7 @@ function reduce(arr, handler) {
   return run(0)
 }
 
-function defaultHandler(file, index) {
+function defaultHandler(file) {
   return new Promise((resolve, reject) => {
     fs.readFile(file, 'utf8', (err, content) => {
       if (err) {

@@ -13,7 +13,7 @@
     "node": ">=4"
   },
   "scripts": {
-    "test": "jest && eslint *.js __test__/* --ext .js"
+    "test": "jest && eslint index.js __test__/* --ext .js"
   },
   "files": [
     "index.js"
@@ -23,9 +23,9 @@
     "fallback"
   ],
   "devDependencies": {
-    "jest-cli": "^15.1.1",
     "eslint": "latest",
-    "eslint-config-egoist": "latest"
+    "eslint-config-egoist": "^1.0.4",
+    "jest-cli": "^15.1.1"
   },
   "jest": {
     "testEnvironment": "node"
